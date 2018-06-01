@@ -33,10 +33,10 @@ def analize_sentiment(tweet):
 
 
 ####input your credentials here
-consumer_key = 'gOYTBFrUckDnnd8CpYKo4pOc8'
-consumer_secret = 'kOLlZA9BKqdJk8moupsnCeaz0OPwjC1YXwvbFHQJx1I1cYChV7'
-access_token = '805231072086724608-QVSifDJxm0LCzoNA6jVnkG5kpiVBkWk'
-access_token_secret = '1heXdob6dKg6qvjqOQZXwB8Ahndwqxl8ipwbIWTMVLR19'
+consumer_key = 'Your-Keys'
+consumer_secret = 'Your-Keys'
+access_token = 'Your-Keys'
+access_token_secret = 'Your-Keys'
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
