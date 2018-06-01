@@ -12,10 +12,10 @@ sys.setdefaultencoding('utf8')
 
 
 #Twitter API credentials
-consumer_key="gOYTBFrUckDnnd8CpYKo4pOc8"
-consumer_secret="kOLlZA9BKqdJk8moupsnCeaz0OPwjC1YXwvbFHQJx1I1cYChV7"
-access_key="805231072086724608-QVSifDJxm0LCzoNA6jVnkG5kpiVBkWk"
-access_secret="1heXdob6dKg6qvjqOQZXwB8Ahndwqxl8ipwbIWTMVLR19"
+consumer_key="Your-Keys"
+consumer_secret="Your-Keys"
+access_key="Your-Keys"
+access_secret="Your-Keys"
 
 
 
