@@ -145,7 +145,7 @@ for tweet in tweepy.Cursor(api.search, q="#Apple", count=100, lang="en", tweet_m
 
 ## License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** - see https://opensource.org/license/mit for details.
 
 ---
 
