@@ -1,118 +1,154 @@
-```markdown
-# Twitter Data Scraping Using Python and Tweepy
+# Twitter Data Scraping using Python (Tweepy)
 
 ## Overview
 
-This Python program allows you to fetch data from Twitter using the `Tweepy` package, which is the official Python library for accessing Twitter's RESTful APIs. With `Tweepy`, you can easily collect tweets, user data, and other information from Twitter, making it a valuable tool for social media analysis, sentiment analysis, or research.
+This repository contains two Python scripts that allow you to fetch and analyze tweets from Twitter using the **Tweepy** library:
 
-This method is based on the work referenced by Yanofsky, who provided a simple way to set up data scraping with `Tweepy` for Python 3.
+1. **Account.py**: Fetches tweets from a specific user's timeline.
+2. **Hashtag.py**: Fetches tweets containing a specific hashtag and performs sentiment analysis.
+
+Both scripts use the **Tweepy** library to interact with the Twitter API and **TextBlob** for sentiment analysis.
 
 ---
 
-## Requirements
+## Prerequisites
 
-- **Python 3.x**
-- **Tweepy** (Python package)
+Before you start using the scripts, you need to have the following installed:
 
-You can install the required package using the following pip command:
+- **Python 3.x** (preferably 3.6+)
+- **Tweepy**: A Python wrapper for the Twitter API.
+- **TextBlob**: A Python library for processing textual data, including sentiment analysis.
+
+You can install the necessary libraries using **pip**:
 
 ```bash
-pip install tweepy
+pip install tweepy textblob
 ```
 
-- **Twitter Developer Account**: You need to have access to the Twitter Developer API to generate the necessary credentials (API keys and access tokens).
+You also need a **Twitter Developer account** and the corresponding **API keys** to access the Twitter API.
 
 ---
 
-## Setup
+## Twitter API Credentials
 
-### Step 1: Create a Twitter Developer Account
+To interact with the Twitter API, you need to create an app on the [Twitter Developer Portal](https://developer.twitter.com/en/apps). Once created, you'll get the following credentials that you need to use in both scripts:
 
-1. Go to the [Twitter Developer](https://developer.twitter.com/) website and create an account if you don't already have one.
-2. Once logged in, create a new project and an application.
-3. After creating the app, you will be given the following keys and tokens:
-   - **API Key**
-   - **API Secret Key**
-   - **Access Token**
-   - **Access Token Secret**
+- **Consumer Key**
+- **Consumer Secret**
+- **Access Token**
+- **Access Token Secret**
 
-These credentials are required to authenticate your Python script with Twitter.
+Replace the placeholder values (`Your-Keys`) in the scripts with your actual credentials.
 
 ---
 
-### Step 2: Setup the Python Script
+## Scripts
 
-Clone or download this repository to your local machine.
+### 1. `Account.py`
+
+This script fetches tweets from a specific Twitter account (timeline) using the `tweepy.Cursor` API. It retrieves a maximum of 3,240 most recent tweets from the account and saves the data to a JSON file.
+
+#### Usage
 
 ```bash
-git clone https://github.com/your-repository/username/Twitter-Data-scrapping-using-Python-Tweepy
+python Account.py
 ```
 
-In your Python script, you need to authenticate with Twitter using the credentials from the Developer API.
+This will fetch tweets from the Twitter account **realDonaldTrump**. You can change the username in the script to fetch tweets from any other account.
 
+#### Key Features:
+
+- **Fetch tweets from a user’s timeline**.
+- Retrieves up to **3,240 tweets** (the maximum allowed by Twitter API).
+- Saves tweet data in **JSON format**.
+
+#### Example:
 ```python
-import tweepy
-
-# Set up your API keys and tokens
-consumer_key = 'YOUR_CONSUMER_KEY'
-consumer_secret = 'YOUR_CONSUMER_SECRET'
-access_token = 'YOUR_ACCESS_TOKEN'
-access_token_secret = 'YOUR_ACCESS_TOKEN_SECRET'
-
-# Authenticate to the Twitter API
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-
-# Set up the Tweepy API object
-api = tweepy.API(auth)
+get_all_tweets("realDonaldTrump")
 ```
 
-Replace the placeholders with the actual API credentials you obtained from your Twitter Developer account.
+### 2. `Hashtag.py`
 
----
+This script fetches tweets containing a specific hashtag and performs sentiment analysis using **TextBlob**. The tweets are saved to a CSV file with the following information: tweet content, sentiment score, and user details.
 
-### Step 3: Fetching Data
+#### Usage
 
-Now you can use the `Tweepy` API to fetch various kinds of data. Below is an example of how to fetch recent tweets containing a specific keyword.
+```bash
+python Hashtag.py
+```
 
+This will search for tweets containing the hashtag `#Apple`. You can modify the hashtag in the `q` parameter to search for other hashtags.
+
+#### Key Features:
+
+- **Fetch tweets by hashtag**.
+- **Sentiment analysis** using **TextBlob**.
+- Saves tweet data (including sentiment) to a **CSV file**.
+
+#### Example:
 ```python
-# Example: Fetch tweets containing a keyword
-keyword = "Python"
-public_tweets = api.search_tweets(keyword, count=10)
-
-for tweet in public_tweets:
-    print(f"Tweet by {tweet.user.screen_name}: {tweet.text}\n")
+for tweet in tweepy.Cursor(api.search, q="#Apple", count=100, lang="en", tweet_mode='extended', since="2018-01-01").items(maxTweets):
 ```
 
-This example fetches the latest 10 tweets containing the keyword "Python" and prints them.
+---
+
+## How the Code Works
+
+### 1. `Account.py` Explanation:
+
+- **Authentication**: The script authenticates using the Twitter API credentials.
+- **Fetching Tweets**: The `get_all_tweets()` function uses `tweepy.Cursor` to fetch tweets from a user's timeline (up to 3,240 tweets).
+- **Saving to JSON**: The tweet data is saved into a **JSON** file (`tweet.json`).
+
+### 2. `Hashtag.py` Explanation:
+
+- **Authentication**: The script authenticates using the Twitter API credentials.
+- **Fetching Tweets by Hashtag**: It uses `tweepy.Cursor` to search for tweets containing the specified hashtag (`#Apple` in this case).
+- **Cleaning Tweet Text**: The `clean_tweet()` function removes special characters and links from the tweet text.
+- **Sentiment Analysis**: The `analyze_sentiment()` function uses **TextBlob** to determine whether the tweet is positive, negative, or neutral based on its sentiment score.
+- **Saving to CSV**: The tweet data, along with sentiment analysis and user details, is saved into a **CSV** file (`tweets.csv`).
 
 ---
 
-## Available Features
+## Example Outputs
 
-- **Fetching Tweets**: You can search for tweets using a specific keyword, hashtag, or user mention.
-- **Fetching User Data**: You can retrieve details of a particular Twitter user such as their followers, tweets, bio, etc.
-- **Streaming Tweets**: You can use the Tweepy streaming API to collect tweets in real-time.
+- **Account.py Output**: A **JSON** file containing tweet objects, including information like tweet content, creation time, user details, and more.
+  
+  ```json
+  {
+    "created_at": "2025-03-24T00:00:00Z",
+    "id": 123456789012345678,
+    "full_text": "This is a tweet",
+    "user": {
+      "screen_name": "realDonaldTrump",
+      "followers_count": 1234567
+    },
+    "favorite_count": 100,
+    "retweet_count": 50,
+    ...
+  }
+  ```
 
----
+- **Hashtag.py Output**: A **CSV** file containing tweet information and sentiment analysis:
 
-## Reference
+  ```csv
+  Created At | Tweet Text | Sentiment | Contributors | Truncated | Is Quote Status | Tweet ID | Source | Favorite Count | Retweet Count | ...
+  2025-03-24 | This is a tweet #Apple | 1 | None | False | False | 1234567890 | Twitter Web App | 100 | 50 | ...
+  ```
 
-This method was adapted from the following source:
-- **Yanofsky's Gist**: [https://gist.github.com/yanofsky/5436496](https://gist.github.com/yanofsky/5436496)
-
----
-
-## Troubleshooting
-
-- **Invalid Credentials**: Ensure that your API keys and tokens are correctly copied from the Twitter Developer portal.
-- **API Rate Limit**: Twitter imposes rate limits on the API usage. Be mindful of these limits to avoid getting blocked.
-- **Missing Packages**: If you encounter a `ModuleNotFoundError`, make sure to install all the required packages using `pip`.
+  - Sentiment is represented as:
+    - `1`: Positive
+    - `0`: Neutral
+    - `-1`: Negative
 
 ---
 
 ## License
 
-This project is licensed under the MIT License - see the https://opensource.org/license/mit file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
+
+## Conclusion
+
+These scripts provide a simple yet powerful way to collect Twitter data based on a user's account or hashtag, perform sentiment analysis, and store the results for further analysis. Make sure you have your Twitter API credentials ready to start using the scripts.
